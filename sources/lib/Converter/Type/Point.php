@@ -19,7 +19,7 @@ namespace PommProject\Foundation\Converter\Type;
  * @author Grégoire HUBERT
  * @license X11 {@link http://opensource.org/licenses/mit-license.php}
  */
-class Point
+class Point implements \ArrayAccess
 {
     public $x;
     public $y;
@@ -29,6 +29,7 @@ class Point
      *
      * Create a point from a string description.
      *
+     * @access public
      * @param  string $description
      */
     public function __construct($description)
@@ -53,6 +54,7 @@ class Point
      *
      * Return a string representation of Point.
      *
+     * @access public
      * @return string
      */
     public function __toString()
@@ -62,5 +64,43 @@ class Point
             $this->x,
             $this->y
         );
+    }
+
+    /**
+     * @param string $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->$offset);
+    }
+
+    /**
+     * @param string $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->$offset;
+    }
+
+    /**
+     * @param string $offset
+     * @param mixed $value
+     * @return $this
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->$offset = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $offset
+     */
+    public function offsetUnset($offset)
+    {
+        $this->$offset = null;
     }
 }
